@@ -57,10 +57,10 @@ pip install -r requirements.txt
 
 ###  2.実行
 ``` bash
-python main.py
+python src/main.py
 ```
 ### 3.操作方法
-実行後、以下のキー操作で動画の制御が可能である。
+実行後、以下のキー操作でプレイヤーの操作が行えます。
 
 | キー / 入力 | 動作 |
 |:---:|:---|
