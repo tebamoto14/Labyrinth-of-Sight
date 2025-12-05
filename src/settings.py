@@ -17,27 +17,28 @@ ROTATION_SPEED = 0.0008
 COLLISION_OFFSET = 0.2
 
 # --- ゲームバランス設定 ---
-BASE_TIME_LIMIT = 30   # 1階層の基本制限時間 (秒)
-TIME_PER_FLOOR = 15    # 1階層上がるごとに追加される時間
+BASE_TIME_LIMIT = 5   # 1階層の基本制限時間 (秒)
+TIME_PER_FLOOR = 10    # 1階層上がるごとに追加される時間
 CLEAR_BONUS = 500      # 階層クリアボーナス
 TIME_BONUS_PER_SEC = 10 # 残り時間1秒あたりのタイムボーナス
 
 # --- ゲーム状態 ---
 GAME_STATE_TRANSITION = "transition"
 GAME_STATE_PLAYING = "playing"
+GAME_STSAE_GAMEOVER = "gameover"
 
 # --- 色の定義 (よく使う色) ---
-COLOR_WHITE = (255, 255, 255)
-COLOR_BLACK = (0, 0, 0)
-COLOR_RED   = (255, 50, 50)
-COLOR_GREEN = (50, 255, 50)
-COLOR_BLUE  = (0, 0, 255)
-COLOR_CYAN  = (0, 255, 255)
-COLOR_GOLD  = (255, 215, 0)
-COLOR_SHADOW= (0, 0, 0)
-COLOR_FLOOR = (80, 80, 80)
-COLOR_WALL  = (200, 200, 200)
-COLOR_STAIRS= (0, 255, 0)
-COLOR_PLAYER= (255, 0, 0)
-COLOR_BG    = (40, 40, 50)
-COLOR_SCANLINE = (0, 0, 0, 50)
+COLOR_WHITE = (255, 255, 255) # 白
+COLOR_BLACK = (0, 0, 0)  # 黒
+COLOR_RED   = (255, 50, 50) # 赤
+COLOR_GREEN = (50, 255, 50) # 緑
+COLOR_BLUE  = (0, 0, 255) # 青
+COLOR_CYAN  = (0, 255, 255) # シアン
+COLOR_GOLD  = (255, 215, 0) # 金色
+COLOR_SHADOW= (0, 0, 0) # 影の色 黒
+COLOR_FLOOR = (80, 80, 80) # 床の色 灰
+COLOR_WALL  = (200, 200, 200) # 壁の色 明るい灰
+COLOR_STAIRS= (0, 255, 0) # 階段の色 緑
+COLOR_PLAYER= (255, 0, 0) # プレイヤーの色 赤
+COLOR_BG    = (40, 40, 50) # 背景色 濃い灰青
+COLOR_SCANLINE = (0, 0, 0, 50) # スキャンラインの色 (半透明黒)
