@@ -85,6 +85,30 @@ def draw_transition_screen(screen, fonts, floor, time_limit, score, start_ticks,
     if (current_ticks // 500) % 2 == 0:
         draw_text_shadow(screen, "GET READY!", fonts["time"], COLOR_RED, center_x, SCREEN_HEIGHT - 80, align="center")
 
+# --- ゲームオーバー画面描画 ---
+def draw_gameover_screen(screen, fonts, score, floor):
+    screen.fill((30, 0 ,0))
+
+    # スキャンライン
+    scanline_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
+    for y in range(0, SCREEN_HEIGHT, 2):
+        pygame.draw.line(scanline_surface, COLOR_SCANLINE, (0, y), (SCREEN_WIDTH, y), 1)
+    screen.blit(scanline_surface, (0, 0))
+
+    center_x = SCREEN_WIDTH // 2
+    center_y = SCREEN_HEIGHT // 2
+
+    # 各要素描画
+    draw_text_shadow(screen, "GAME OVER", fonts["transition"], COLOR_RED, center_x, center_y - 80, align="center")
+    
+    draw_text_shadow(screen, f"FINAL SCORE: {score:06}", fonts["score"], COLOR_GOLD, center_x, center_y + 10, align="center")
+    draw_text_shadow(screen, f"REACHED FLOOR: {floor}", fonts["floor"], COLOR_CYAN, center_x, center_y + 50, align="center")
+
+    # 点滅メッセージ
+    current_ticks = pygame.time.get_ticks()
+    if (current_ticks // 500) % 2 == 0:
+        draw_text_shadow(screen, "PRESS SPACE TO RETRY", fonts["floor"], COLOR_WHITE, center_x, SCREEN_HEIGHT - 100, align="center")
+
 # --- ミニマップ描画 ---
 def draw_minimap(screen, px, py, p_angle, game_map, visited_map):
     CELL_SIZE = 7

@@ -3,7 +3,7 @@ import sys
 import math
 from settings import *
 from maze import generate_maze
-from ui import load_fonts, draw_game_ui, draw_transition_screen, draw_minimap
+from ui import load_fonts, draw_game_ui, draw_transition_screen, draw_gameover_screen, draw_minimap
 
 def main():
     # --- Pygameの初期化 ---
@@ -103,14 +103,7 @@ def main():
             
             # タイムオーバー処理
             if remaining_time <= 0:
-                floor = 1
-                score = 0
-                plus_score = 0
-                MAP, VISITED_MAP = generate_maze(floor)
-                current_time_limit = BASE_TIME_LIMIT
-                player_x, player_y = START_POS_X, START_POS_Y
-                game_state = GAME_STATE_TRANSITION
-                start_time = pygame.time.get_ticks()
+                game_state = GAME_STSAE_GAMEOVER
                 
             # 訪問記録
             current_map_x, current_map_y = int(player_x), int(player_y)
@@ -181,6 +174,27 @@ def main():
             draw_minimap(screen, player_x, player_y, player_angle, MAP, VISITED_MAP)
             draw_game_ui(screen, fonts, floor, remaining_time, score)
             
+        # -------------------------------
+        # 3. ゲームオーバー (GAMEOVER)  
+        # -------------------------------
+        elif game_state == GAME_STSAE_GAMEOVER:
+            draw_gameover_screen(screen, fonts, score, floor)
+            
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_SPACE]:
+                # ゲームリセット
+                floor = 1
+                score = 0
+                plus_score = 0
+                MAP, VISITED_MAP = generate_maze(floor)
+                current_time_limit = BASE_TIME_LIMIT
+                player_x = START_POS_X
+                player_y = START_POS_Y
+                player_angle = 0
+                start_time = pygame.time.get_ticks()
+                game_state = GAME_STATE_TRANSITION    
+        
+        
         pygame.display.flip()
         clock.tick(60)
 
