@@ -143,14 +143,9 @@ def draw_minimap(screen, px, py, p_angle, game_map, visited_map, items):
             item_map_y = MAP_POS_Y + iy * CELL_SIZE  + CELL_SIZE // 2
             
             # アイテムの色
-            if item["type"] in ITEM_MAP:
-                item_color = COLOR_ITEM_MAP
-            elif item["type"] in [ITEM_SPEED_DOWN]:
-                item_color = COLOR_ITEM_BAD
-            else:
-                item_color = COLOR_ITEM_GOOD
+            color = COLOR_ITEM_MYSTERY
 
-            pygame.draw.circle(screen, item_color, (item_map_x, item_map_y), CELL_SIZE // 2 - 1)
+            pygame.draw.circle(screen, color, (item_map_x, item_map_y), CELL_SIZE // 2 - 1)
         
     player_map_x = MAP_POS_X + px * CELL_SIZE
     player_map_y = MAP_POS_Y + py * CELL_SIZE
@@ -159,3 +154,34 @@ def draw_minimap(screen, px, py, p_angle, game_map, visited_map, items):
     dir_end_x = player_map_x + math.cos(p_angle) * (CELL_SIZE * 1) 
     dir_end_y = player_map_y + math.sin(p_angle) * (CELL_SIZE * 1)
     pygame.draw.line(screen, COLOR_PLAYER, (player_map_x, player_map_y), (dir_end_x, dir_end_y), 2)
+    
+
+# --- アイテム取得メッセージ描画 ---
+def draw_item_message(screen, fonts, message):
+    if not message:
+        return
+
+    # 画面中央
+    center_x = SCREEN_WIDTH // 2
+    center_y = SCREEN_HEIGHT // 3 # 少し上寄りに表示
+
+    # 背景の黒帯（半透明）を描画して文字を見やすくする
+    # テキストのサイズを測る
+    text_surf = fonts["score"].render(message, True, (255,255,255))
+    w = text_surf.get_width() + 40
+    h = text_surf.get_height() + 20
+    
+    bg_rect = pygame.Rect(0, 0, w, h)
+    bg_rect.center = (center_x, center_y)
+    
+    # 半透明描画のためのSurface作成
+    s = pygame.Surface((w, h))
+    s.set_alpha(200) # 透明度
+    s.fill((0, 0, 0))
+    screen.blit(s, bg_rect.topleft)
+    
+    # 枠線
+    pygame.draw.rect(screen, COLOR_CYAN, bg_rect, 2)
+
+    # 文字描画
+    draw_text_shadow(screen, message, fonts["score"], COLOR_GOLD, center_x, center_y, align="center")

@@ -42,6 +42,11 @@ def main():
     
     # ゲーム状態
     game_state = GAME_STATE_TRANSITION
+    
+    # メッセージ表示用の変数
+    pickup_message = ""
+    pickup_message_start = 0
+    MESSAGE_DURATION = 2000 # 2秒間表示
 
     # --- ゲームループ ---
     running = True
@@ -114,7 +119,14 @@ def main():
                 
                 if dist < 0.5: # 半径0.5マス以内なら取得
                     itype = item["type"]
+                    # 取得メッセージを設定
+                    # 文字列をきれいに整形 (例: "speed_up" -> "SPEED UP")
+                    item_name = itype.replace("_", " ").upper()
+                    pickup_message = f"GET: {item_name}!"
+                    pickup_message_start = current_ticks
+                    
                     print(f"Got item: {itype}") # デバッグ表示
+                    
                     
                     # --- 効果発動 ---
                     if itype == ITEM_HOURGLASS:
@@ -286,9 +298,9 @@ def main():
 
                     # パフォーマンスのため、画面内にあるかチェック
                     if -sprite_width < sprite_screen_x < SCREEN_WIDTH + sprite_width:
-                        color = ITEM_COLORS.get(item["type"], (255, 255, 255))
+                        color = COLOR_ITEM_MYSTERY
                         circle_center = (sprite_screen_x, SCREEN_HEIGHT // 2)
-                        circle_radius = sprite_height // 4 # 少し小さく調整
+                        circle_radius = sprite_height // 5 # 少し小さく調整
                         
                         # 本来は1ラインずつZバッファ判定すべきだが、簡易的に「中心点のZバッファ」で判定する
                         # (アイテムの中心が壁の手前なら描画)
@@ -296,12 +308,24 @@ def main():
                         
                         if transform_y < z_buffer[check_ray]:
                             # 単純な円を描画
+                            pygame.draw.circle(screen, (100, 100, 255), circle_center, circle_radius + 2)
+                            # 中心
                             pygame.draw.circle(screen, color, circle_center, circle_radius)
-                            # 枠線
-                            pygame.draw.circle(screen, (0,0,0), circle_center, circle_radius, 2)
-                               
+      
             draw_minimap(screen, player_x, player_y, player_angle, MAP, VISITED_MAP, items)
             draw_game_ui(screen, fonts, floor, remaining_time, score)
+                       
+            # UI描画の後あたりにメッセージ描画を追加
+            draw_game_ui(screen, fonts, floor, remaining_time, score)
+            
+            # ★追加: メッセージが表示期間内なら描画
+            if pickup_message and current_ticks - pickup_message_start < MESSAGE_DURATION:
+                # ui.py に追加した関数を呼ぶ (インポート忘れずに！)
+                from ui import draw_item_message 
+                draw_item_message(screen, fonts, pickup_message)
+            else:
+                pickup_message = "" # 時間切れなら消す
+                                               
             
         # -------------------------------
         # 3. ゲームオーバー (GAMEOVER)  

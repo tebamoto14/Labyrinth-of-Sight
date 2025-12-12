@@ -52,6 +52,7 @@ ITEM_SPEED_UP    = "speed_up"    # スピードアップ
 ITEM_SPEED_DOWN  = "speed_down"  # スピードダウン (罠)
 
 # アイテムの色 (ミニマップ用)
-COLOR_ITEM_GOOD = (255, 215, 0)  # 金色 (良いアイテム)
-COLOR_ITEM_BAD  = (128, 0, 128)  # 紫色 (悪いアイテム)
-COLOR_ITEM_MAP  = (0, 255, 255)  # 水色 (地図)
+# "謎の光"っぽい、淡いシアン色
+COLOR_ITEM_MYSTERY = (200, 240, 255) 
+# メッセージ表示用の色
+COLOR_MESSAGE_BG = (0, 0, 0, 180) # 半透明の黒
