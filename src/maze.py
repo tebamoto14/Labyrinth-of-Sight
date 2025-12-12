@@ -1,4 +1,5 @@
 import random
+from settings import *
 
 # --- 迷路自動生成関数 (棒倒し法) ---
 def generate_maze(floor):
@@ -38,8 +39,8 @@ def generate_maze(floor):
                 new_map[y - 1][x] = 0
             elif direction == 'left':
                 new_map[y][x - 1] = 0
-    
-    # 階段(2)を設置する
+       
+     # 階段(2)を設置する
     possible_stairs = []
     for y in range(1, height-1, 2):
         for x in range(1, width-1, 2):
@@ -49,13 +50,62 @@ def generate_maze(floor):
                 possible_stairs.append((x, y))    
                             
     if not possible_stairs:
-        stair_x = width - 2
-        stair_y = height - 2
+        stair_x = 2
+        stair_y = 2
     else:
         stair_x, stair_y = random.choice(possible_stairs)
                 
     new_map[stair_y][stair_x] = 2
 
     print(f"--- Floor {floor} generated! Size: {width}x{height} ---")
-    # print(new_map) # デバッグ用: マップの中身が見たければコメントアウトを外す
-    return new_map, new_visited_map
+    print(f"Stairs at: ({stair_x}, {stair_y})")      
+                
+    # アイテムの設置
+    items = []
+    
+    # 設置可能な床のリスト
+    possible_item_spots = []
+    for y in range(1, height-1):
+        for x in range(1, width-1):
+            if new_map[y][x] == 0 and not (x == 1 and y == 1):
+                possible_item_spots.append((x, y))
+                
+    random.shuffle(possible_item_spots)
+    
+    # アイテムを置く数
+    num_items = floor // 3 + 3
+
+    # アイテムの種類の重みづけ
+    item_types = [
+        ITEM_HOURGLASS,
+        ITEM_MAP,
+        ITEM_WARP_START,
+        ITEM_WARP_RANDOM,
+        ITEM_SPEED_UP,
+        ITEM_SPEED_DOWN
+    ]
+    # それぞれの確率
+    weights = [20, 10, 15, 15, 20, 20]
+    
+    # 配置できる場所がある限り配置
+    # sampleではなく、シャッフルしたリストの前から順番にとっていく方式に変更
+    count = 0
+    for x, y in possible_item_spots:
+        if count >= num_items:
+            break
+            
+        # 階段予定地には置かないように簡易ガード
+        if x > stair_x +- 2 and y > stair_y +- 2:
+            continue
+
+        itype = random.choices(item_types, weights=weights, k=1)[0]
+        
+        items.append({
+            "type": itype,
+            "x": x + 0.5, # ★重要: +0.5 で必ずマスの「ど真ん中」に置く
+            "y": y + 0.5
+        })
+        print(f"Item placed: {itype} at ({x}, {y})")
+        count += 1
+         
+    return new_map, new_visited_map, items

@@ -17,8 +17,8 @@ ROTATION_SPEED = 0.0008
 COLLISION_OFFSET = 0.2
 
 # --- ゲームバランス設定 ---
-BASE_TIME_LIMIT = 5   # 1階層の基本制限時間 (秒)
-TIME_PER_FLOOR = 10    # 1階層上がるごとに追加される時間
+BASE_TIME_LIMIT = 20   # 1階層の基本制限時間 (秒)
+TIME_PER_FLOOR = 5    # 1階層上がるごとに追加される時間
 CLEAR_BONUS = 500      # 階層クリアボーナス
 TIME_BONUS_PER_SEC = 10 # 残り時間1秒あたりのタイムボーナス
 
@@ -42,3 +42,16 @@ COLOR_STAIRS= (0, 255, 0) # 階段の色 緑
 COLOR_PLAYER= (255, 0, 0) # プレイヤーの色 赤
 COLOR_BG    = (40, 40, 50) # 背景色 濃い灰青
 COLOR_SCANLINE = (0, 0, 0, 50) # スキャンラインの色 (半透明黒)
+
+# --- アイテム設定 ---
+ITEM_HOURGLASS = "hourglass" # 時間延長アイテム
+ITEM_MAP = "map"           # マップ表示アイテム
+ITEM_WARP_START = "warp_start" # スタート地点ワープアイテム
+ITEM_WARP_RANDOM = "warp_random" # ランダムワープアイテム
+ITEM_SPEED_UP    = "speed_up"    # スピードアップ
+ITEM_SPEED_DOWN  = "speed_down"  # スピードダウン (罠)
+
+# アイテムの色 (ミニマップ用)
+COLOR_ITEM_GOOD = (255, 215, 0)  # 金色 (良いアイテム)
+COLOR_ITEM_BAD  = (128, 0, 128)  # 紫色 (悪いアイテム)
+COLOR_ITEM_MAP  = (0, 255, 255)  # 水色 (地図)

@@ -110,7 +110,7 @@ def draw_gameover_screen(screen, fonts, score, floor):
         draw_text_shadow(screen, "PRESS SPACE TO RETRY", fonts["floor"], COLOR_WHITE, center_x, SCREEN_HEIGHT - 100, align="center")
 
 # --- ミニマップ描画 ---
-def draw_minimap(screen, px, py, p_angle, game_map, visited_map):
+def draw_minimap(screen, px, py, p_angle, game_map, visited_map, items):
     CELL_SIZE = 7
     map_pixel_height = len(game_map) * CELL_SIZE
     
@@ -133,7 +133,25 @@ def draw_minimap(screen, px, py, p_angle, game_map, visited_map):
                 
                 if color:
                     pygame.draw.rect(screen, color, rect)
+    
+    # アイテムの描画
+    for item in items:
+        ix, iy = int(item["x"]), int(item["y"])
+        
+        if visited_map[iy][ix] == 1:
+            item_map_x = MAP_POS_X + ix * CELL_SIZE  + CELL_SIZE // 2
+            item_map_y = MAP_POS_Y + iy * CELL_SIZE  + CELL_SIZE // 2
+            
+            # アイテムの色
+            if item["type"] in ITEM_MAP:
+                item_color = COLOR_ITEM_MAP
+            elif item["type"] in [ITEM_SPEED_DOWN]:
+                item_color = COLOR_ITEM_BAD
+            else:
+                item_color = COLOR_ITEM_GOOD
 
+            pygame.draw.circle(screen, item_color, (item_map_x, item_map_y), CELL_SIZE // 2 - 1)
+        
     player_map_x = MAP_POS_X + px * CELL_SIZE
     player_map_y = MAP_POS_Y + py * CELL_SIZE
     pygame.draw.circle(screen, COLOR_PLAYER, (player_map_x, player_map_y), CELL_SIZE // 2)
